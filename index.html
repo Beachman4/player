@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="src/Player-compiled.js"></script>
+</head>
+<body>
+    <div id="player">
+        <audio id="media" src="test.mp3"></audio>
+    </div>
+<script>
+    var player = new Player();
+    player.init(document.querySelector('#media'));
+</script>
+</body>
+</html>
