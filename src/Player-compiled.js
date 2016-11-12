@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -11,17 +11,24 @@ var Player = function () {
         this.player = null;
         this.src = null;
         this.type = 1;
+        this.currentSong = null;
+        this.previousSong = null;
+        this.currentVideo = null;
+        this.playing = false;
+        //won't use this, just while I'm doing this shit
+        this.playlist = ['playlist/death.mp3', 'playlist/get.mp3', 'playlist/into.mp3', 'playlist/love.mp3', 'playlist/misery.mp3', 'playlist/silence.mp3'];
     }
 
     _createClass(Player, [{
-        key: "init",
+        key: 'init',
         value: function init(element) {
             this.player = element;
             this.player.controls = true;
-            this.play();
+            this.initHandlers();
+            this.loadPlayist();
         }
     }, {
-        key: "mediaType",
+        key: 'mediaType',
         value: function mediaType() {
             if (this.player.tagName == "AUDIO") {
                 this.type = 1;
@@ -30,24 +37,70 @@ var Player = function () {
             }
         }
     }, {
-        key: "play",
+        key: 'play',
         value: function play() {
             this.player.play();
+            this.playing = true;
+            document.getElementById('player-pause').style.display = 'block';
+            document.getElementById('player-play').style.display = 'none';
         }
     }, {
-        key: "stop",
+        key: 'stop',
         value: function stop() {
             this.player.pause();
+            this.playing = false;
+            document.getElementById('player-play').style.display = 'block';
+            document.getElementById('player-pause').style.display = 'none';
         }
     }, {
-        key: "fastforward",
+        key: 'fastforward',
         value: function fastforward() {}
     }, {
-        key: "volumeUp",
-        value: function volumeUp() {}
+        key: 'previous',
+        value: function previous() {
+            var index = this.playlist.indexOf(this.currentSong) - 1;
+            if (index < 0) {
+                index = this.playlist.length - 1;
+            }
+            this.loadNewMedia(this.playlist[index]);
+        }
     }, {
-        key: "initHandlers",
-        value: function initHandlers() {}
+        key: 'loadPlayist',
+        value: function loadPlayist() {
+            this.loadNewMedia(this.playlist[0]);
+        }
+    }, {
+        key: 'forward',
+        value: function forward() {
+            var index = this.playlist.indexOf(this.currentSong) + 1;
+            if (index > this.playlist.length - 1) {
+                index = 0;
+            }
+            this.loadNewMedia(this.playlist[index]);
+        }
+    }, {
+        key: 'volumeChange',
+        value: function volumeChange(test) {
+            this.player.volume = test.value;
+        }
+    }, {
+        key: 'loadNewMedia',
+        value: function loadNewMedia(src) {
+            this.stop();
+            this.previousSong = this.currentSong;
+            this.currentSong = src;
+            this.player.currentTime = 0;
+            this.player.src = src;
+            this.player.load();
+            //this.play();
+        }
+    }, {
+        key: 'initHandlers',
+        value: function initHandlers() {
+            this.player.addEventListener('ended', function () {
+                this.forward();
+            }.bind(this));
+        }
     }]);
 
     return Player;

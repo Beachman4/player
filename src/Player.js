@@ -5,13 +5,27 @@ class Player
         this.player = null;
         this.src = null;
         this.type = 1;
+        this.currentSong = null;
+        this.previousSong = null;
+        this.currentVideo = null;
+        this.playing = false;
+        //won't use this, just while I'm doing this shit
+        this.playlist = [
+            'playlist/death.mp3',
+            'playlist/get.mp3',
+            'playlist/into.mp3',
+            'playlist/love.mp3',
+            'playlist/misery.mp3',
+            'playlist/silence.mp3'
+        ];
     }
 
     init(element)
     {
         this.player = element;
         this.player.controls = true;
-        this.play();
+        this.initHandlers();
+        this.loadPlayist();
     }
 
     mediaType()
@@ -28,24 +42,67 @@ class Player
     play()
     {
         this.player.play();
+        this.playing = true;
+        document.getElementById('player-pause').style.display = 'block';
+        document.getElementById('player-play').style.display = 'none';
+
     }
     stop()
     {
         this.player.pause();
+        this.playing = false;
+        document.getElementById('player-play').style.display = 'block';
+        document.getElementById('player-pause').style.display = 'none';
     }
     fastforward()
     {
 
     }
 
-    volumeUp()
+    previous()
     {
+        var index = this.playlist.indexOf(this.currentSong) - 1;
+        if (index < 0) {
+            index = this.playlist.length - 1;
+        }
+        this.loadNewMedia(this.playlist[index]);
+    }
 
+    loadPlayist()
+    {
+        this.loadNewMedia(this.playlist[0]);
+    }
+
+    forward()
+    {
+        var index = this.playlist.indexOf(this.currentSong) + 1;
+        if (index > this.playlist.length - 1) {
+            index = 0;
+        }
+        this.loadNewMedia(this.playlist[index]);
+    }
+
+    volumeChange(test)
+    {
+        this.player.volume = test.value;
+    }
+
+    loadNewMedia(src)
+    {
+        this.stop();
+        this.previousSong = this.currentSong;
+        this.currentSong = src;
+        this.player.currentTime = 0;
+        this.player.src = src;
+        this.player.load();
+        //this.play();
     }
 
     initHandlers()
     {
-
+        this.player.addEventListener('ended', function() {
+            this.forward();
+        }.bind(this));
     }
 
 }
