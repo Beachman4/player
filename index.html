@@ -10,7 +10,34 @@
 <body>
     <div id="player">
         <audio id="media"></audio>
-        <div id="player-controls">
+        <div id="player-control-wrapper">
+            <div id="player-controls">
+                <div id="player-left">
+                    <div id="player-playpause">
+                        <a href="#" id="player-play" style="display: none" onclick="player.play(this); return false;"><i class="fa fa-play fa-3x"></i></a>
+                        <a href="#" id="player-pause" onclick="player.stop(this); return false;"><i class="fa fa-pause fa-3x"></i></a>
+                    </div>
+                    <div id="player-seek">
+                        <a href="#" id="player-previous" onclick="player.previous(this); return false;"><i class="fa fa-step-backward fa-3x"></i></a>
+                        <a href="#" id="player-next" onclick="player.forward(this); return false;"><i class="fa fa-step-forward fa-3x"></i></a>
+                    </div>
+                </div>
+                <div id="player-middle">
+                    <div id="player-progress">
+                        <p id="player-currentTime"></p>
+                        <progress id="player-progress-bar"></progress>
+                        <p id="player-totalTime"></p>
+                    </div>
+                </div>
+                <div id="player-right">
+                    <div id="player-volume">
+                        <i style="color: #fff;" class="fa fa-volume-up fa-2x"></i>
+                        <input min="0" max="1" step="0.1" type="range" id="volume" onMouseMove="player.volumeChange(this);">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div id="player-controls">
             <div id="player-playpause">
                 <a href="#" id="player-play" style="display: none" onclick="player.play(this); return false;"><i class="fa fa-play fa-3x"></i></a>
                 <a href="#" id="player-pause" onclick="player.stop(this); return false;"><i class="fa fa-pause fa-3x"></i></a>
@@ -21,14 +48,14 @@
             </div>
             <div id="player-volume">
                 <i style="color: #fff;" class="fa fa-volume-up fa-2x"></i>
-                <input min="0" max="1" step="0.1" type="range" id="volume" orient="vertical" onMouseMove="player.volumeChange(this);">
+                <input min="0" max="1" step="0.1" type="range" id="volume" onMouseMove="player.volumeChange(this);">
             </div>
             <div id="player-progress">
                 <p id="player-currentTime"></p>
                 <progress id="player-progress-bar"></progress>
                 <p id="player-totalTime"></p>
             </div>
-        </div>
+        </div>-->
     </div>
     <style>
         /*#volume
@@ -60,7 +87,7 @@
             position: fixed;
             bottom: 0;
             left: 0;
-            background-image: url('player.png');
+            /*background-image: url('player.png');*/
             background-size: 100%;
         }
         #player-previous {

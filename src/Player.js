@@ -27,6 +27,7 @@ class Player
         this.player.controls = true;
         this.initHandlers();
         this.loadPlayist();
+        document.getElementById('volume').value = this.player.volume;
     }
 
     mediaType()
@@ -101,7 +102,6 @@ class Player
             var currentTime = this.player.currentTime;
             var minutes = Math.floor(currentTime / 60);
             var seconds = currentTime - minutes * 60;
-            console.log(String(parseInt(seconds)).length);
             if (String(parseInt(seconds)).length == 1) {
                 seconds = "0" + String(parseInt(seconds));
             } else {
